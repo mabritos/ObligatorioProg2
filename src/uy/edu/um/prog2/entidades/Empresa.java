@@ -5,4 +5,5 @@ public class Empresa {
 	String nombre;
 	String ruc;
 	
+	
 }
