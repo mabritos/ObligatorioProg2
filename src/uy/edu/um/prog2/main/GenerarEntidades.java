@@ -13,22 +13,21 @@ public class GenerarEntidades {
 	 public static void main(String[]args) throws IOException {
 		 CSVReader reader = new CSVReader(new FileReader(ADDRESS_FILE), ';');
 		 String[] nextLine;
-		 int x = 1;
+		 int capacidad = 0;
 		 Rubro rubro;
-		 Rubro[] r1 = new Rubro[2];
 		 Empresa empresa;
 		 Producto producto;
 		 Marca marca;
 		 Clase clase;
 		 Pais pais;
+		 
+		 while((nextLine = reader.readNext())!=null) {
+			 capacidad++;
+		 }
 		 while((nextLine = reader.readNext())!=null) {
 			 rubro = new Rubro(nextLine[3]);
-			 if(!r1.contains(rubro))
-				 r1.add(rubro);
 			 empresa = new Empresa(nextLine[5], nextLine[23]);
 			 marca = new Marca(nextLine[12]);
-			 
-			 x++;
 		 }
 	 }
 
