@@ -28,50 +28,66 @@ public class Main {
 		 Clase clase;
 		 Pais pais;
 		 
-		 HashTable<Pais> paises = new ClosedHashTable<Pais>(79);
+		 HashTable<Pais> paises = new ClosedHashTable<Pais>(211);
 		 MyBinarySearchTree<Long, Empresa> empresas = new MyBinaryTreeSearchImp<Long, Empresa>();
-		 HashTable<Marca> marcas = new ClosedHashTable<Marca>(4926);
-		 HashTable<Clase> clases = new ClosedHashTable<Clase>(625);
-		 HashTable<Producto> productos = new ClosedHashTable<Producto>(429000);
+		 HashTable<Marca> marcas = new ClosedHashTable<Marca>(5107);
+		 HashTable<Clase> clases = new ClosedHashTable<Clase>(719);
+		 HashTable<Producto> productos = new ClosedHashTable<Producto>(50363);
 		
 		 nextLine = reader.readNext();
 		 while((nextLine = reader.readNext())!=null) {
 			 
 			 rubro = new Rubro(nextLine[3]);
-			 marca = new Marca(nextLine[12]);
-			 clase = new Clase(nextLine[8]);
+			// marca = new Marca(nextLine[12]);
+			// clase = new Clase(nextLine[8]);
+			 
+			 
+			 producto = new Producto(nextLine[0],nextLine[1], nextLine[20], nextLine[2], nextLine[4]);
+			 productos.insertar(nextLine[0]+nextLine[2]+nextLine[4], producto);
+			 
+			 if(!clases.pertenece(nextLine[10])) {
+				 clase = new Clase(nextLine[10]);
+				 clase.agregarProducto(nextLine[0]+nextLine[2]+nextLine[4], producto);
+				 clases.insertar(nextLine[10], clase);
+			 }
+			 else
+				 clases.get(nextLine[10]).agregarProducto(nextLine[0]+nextLine[2]+nextLine[4], producto);
+			 
+			 if(!marcas.pertenece(nextLine[12])) {
+				 marca = new Marca(nextLine[12]);
+				 marca.agregarClase(nextLine[10], clases.get(nextLine[10]));
+				 marcas.insertar(nextLine[12], marca);
+			 }else
+				 marcas.get(nextLine[12]).agregarClase(nextLine[10], clases.get(nextLine[10]));
 			 
 			 if(!empresas.isEmpty()) {
 				 if(empresas.find(Long.valueOf(nextLine[23]))==null) {
 					 empresa = new Empresa(nextLine[5], nextLine[23]);
+					 empresa.agregarMarca(nextLine[12], marcas.get(nextLine[12]));
 					 empresas.insert(Long.valueOf(nextLine[23]), empresa);
 					 //System.out.println(nextLine[5]);
 				 }
 			 }
 			 else {
 				 empresa = new Empresa(nextLine[5], nextLine[23]);
+				 empresa.agregarMarca(nextLine[12], marcas.get(nextLine[12]));
 				 empresas.insert(Long.valueOf(nextLine[23]), empresa);
 			 }
 			
 			 
 			 if(!paises.pertenece(nextLine[13])) {
 				 pais = new Pais(nextLine[13]);
+				 pais.agregarEmpresa(Long.valueOf(nextLine[23]), empresas.find(Long.valueOf(nextLine[23])));
 				 paises.insertar(nextLine[13], pais);
-				 //System.out.println(nextLine[13]);
-			 }
+			 }else 
+				 paises.get(nextLine[13]).agregarEmpresa(Long.valueOf(nextLine[23]), empresas.find(Long.valueOf(nextLine[23])));
+				
+				
 			 
-			 if(!marcas.pertenece(nextLine[12])) {
-				 marca = new Marca(nextLine[12]);
-				 marcas.insertar(nextLine[12], marca);
-			 }
+			
 			 
-			 if(!clases.pertenece(nextLine[10])) {
-				 clase = new Clase(nextLine[10]);
-				 clases.insertar(nextLine[10], clase);
-			 }
-			 producto = new Producto(nextLine[0],nextLine[1], nextLine[20], nextLine[2], nextLine[4]);
-			 productos.insertar(nextLine[0]+nextLine[2]+nextLine[4]+nextLine[10], producto);
-			 
+			
+			
 			 
 		 }
 		 double endTime = System.nanoTime();

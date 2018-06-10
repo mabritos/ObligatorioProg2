@@ -11,7 +11,7 @@ public class Pais {
 	String nombre;
 
 	public Pais(String nombre) {
-		super();
+		empresas = new MyBinaryTreeSearchImp<Long, Empresa>();
 		this.nombre = nombre;
 	}
 	public void agregarEmpresa(long key, Empresa e) {

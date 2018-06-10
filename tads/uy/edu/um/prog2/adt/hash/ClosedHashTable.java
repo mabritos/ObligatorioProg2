@@ -7,10 +7,13 @@ public class ClosedHashTable<T> implements HashTable<T> {
 	public ClosedHashTable(int elementos) {
 		hash = new Node[elementos];
 	}
+	public ClosedHashTable() {
+		hash = new Node[10];
+	}
 	@Override
 	public void insertar(String clave, T valor) throws ElementoYaExistenteException, HashCompletoException {
 		Node<T> node = new Node<T>(clave, valor);
-		int pos = fHash(clave);
+		int pos = Math.abs(clave.hashCode() % hash.length);
 			/*if(pertenece(clave)==true)
 				throw new ElementoYaExistenteException("Elemento ya existente en el Hash");
 			
@@ -28,8 +31,18 @@ public class ClosedHashTable<T> implements HashTable<T> {
 					}
 					if(hash[i+pos]==null)
 						hash[i+pos] = node;
-					else
-						throw new HashCompletoException("Hash Completo");
+					else {
+						//arraycopy(Object src, int srcPos,
+	                            // Object dest, int destPos, int length)
+						int e = 0;
+						Node<T>[] hash1 = new Node[hash.length*2];
+						for(int n = 0; n<hash.length;n++) {
+							hash1[n] = hash[n];
+							e = n;
+						}
+						hash = hash1;
+						hash[e]=node;
+					}
 				}
 			}
 			else
@@ -39,7 +52,7 @@ public class ClosedHashTable<T> implements HashTable<T> {
 	@Override
 	public boolean pertenece(String clave) {
 		boolean belongs = false;
-		int pos = fHash(clave);
+		int pos = Math.abs(clave.hashCode() % hash.length);;
 		if(hash[pos]!=null) {
 			if(hash[pos].getKey().equals(clave))
 				belongs = true;
@@ -58,7 +71,7 @@ public class ClosedHashTable<T> implements HashTable<T> {
 	@Override
 	public void borrar(String clave) throws ElementoNoExisteException {
 		if(pertenece(clave) == true) {
-			int pos = fHash(clave);
+			int pos = Math.abs(clave.hashCode() % hash.length);;
 			int newPos =  fHashCollisions(clave,pos)+pos;
 			hash[newPos] = null;
 			
@@ -97,7 +110,7 @@ public class ClosedHashTable<T> implements HashTable<T> {
 				}
 				i = x;
 			}
-		}
+			
 			if(ret == false) {
 				for(int x=0;x+pos>-1 && ret == false; x--) {
 					if(hash[x+pos]!=null) {
@@ -107,8 +120,26 @@ public class ClosedHashTable<T> implements HashTable<T> {
 					i = x;
 				}
 			}
+		}
+			
 		
 		return i;
+	}
+	/*public T get(String clave){
+		int pos = fHash(clave);
+		return hash[fHashCollisions(clave, pos)].getValue();
+		
+	}*/
+	public T get(String clave) {
+		if(pertenece(clave) == true) {
+			int pos = Math.abs(clave.hashCode() % hash.length);;
+			int newPos =  fHashCollisions(clave,pos)+pos;
+			return hash[newPos].getValue();
+			
+		}
+		else 
+			return null;
+		
 	}
 
 }
