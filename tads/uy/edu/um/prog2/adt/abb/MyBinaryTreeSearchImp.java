@@ -8,6 +8,15 @@ public class MyBinaryTreeSearchImp<K extends Comparable<K>, T> implements MyBina
 	public MyBinaryTreeSearchImp(Comparable key, T data) {
 		raiz = new NodeBST(key, data);
 	}
+	public MyBinaryTreeSearchImp() {
+		
+	} 
+	public boolean isEmpty() {
+		if (raiz == null)
+			return true;
+		else
+			return false;
+	}
 	@Override
 	public T find(Comparable key) {
 		if(raiz.findNode(key)!=null)
@@ -18,7 +27,13 @@ public class MyBinaryTreeSearchImp<K extends Comparable<K>, T> implements MyBina
 
 	@Override
 	public void insert(Comparable key, Object data) {
-		raiz.insertNode(key, data);
+		if(raiz == null)
+			raiz = new NodeBST(key, data);
+		else
+			raiz.insertNode(key, data);
+	}
+	public NodeBST getRaiz() {
+		return raiz;
 	}
 
 	@Override

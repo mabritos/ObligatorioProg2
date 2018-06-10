@@ -11,9 +11,10 @@ public class ClosedHashTable<T> implements HashTable<T> {
 	public void insertar(String clave, T valor) throws ElementoYaExistenteException, HashCompletoException {
 		Node<T> node = new Node<T>(clave, valor);
 		int pos = fHash(clave);
-			if(pertenece(clave)==true)
+			/*if(pertenece(clave)==true)
 				throw new ElementoYaExistenteException("Elemento ya existente en el Hash");
-			if(hash[pos]!=null) {
+			
+			else */if(hash[pos]!=null) {
 				int x = 0;
 				while(x+pos<hash.length-1 && hash[x+pos]!=null) {
 					x++;
