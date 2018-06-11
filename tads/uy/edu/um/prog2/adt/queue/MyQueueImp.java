@@ -56,6 +56,9 @@ public class MyQueueImp<T> implements MyQueue<T> {
 			throw new EmptyQueueException("Queue Vacio");
 		return value;
 	}
+	public int size() {
+		return head.getsize(1);
+	}
 	
 
 }

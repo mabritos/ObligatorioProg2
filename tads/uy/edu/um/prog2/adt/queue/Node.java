@@ -22,6 +22,14 @@ public class Node<T> {
 	public void setValue(T value) {
 		this.value = value;
 	}
+	public int getsize(int e) {
+		if(getNext()!=null) {
+			e =getNext().getsize(e);
+			e++;
+			}
+		
+		return e;
+	}
 	
 	
 	

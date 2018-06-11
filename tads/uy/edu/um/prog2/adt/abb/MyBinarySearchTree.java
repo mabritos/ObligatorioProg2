@@ -7,7 +7,7 @@ public interface MyBinarySearchTree <K extends Comparable<K>, T>{
 	void insert (K key, T data);
 	void delete (K key);
 	boolean isEmpty();
-	MyQueue<K> inOrden();
+	MyQueue<T> inOrden();
 	MyQueue<K> preOrden();
 	MyQueue<K> postOrden();
 }

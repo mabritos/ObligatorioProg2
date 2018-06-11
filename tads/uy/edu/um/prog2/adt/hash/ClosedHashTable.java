@@ -1,8 +1,11 @@
 package uy.edu.um.prog2.adt.hash;
 
+import java.util.Iterator;
+
 public class ClosedHashTable<T> implements HashTable<T> {
 
 	private Node<T>[] hash;
+	private int cantElementos;
 	
 	public ClosedHashTable(int elementos) {
 		hash = new Node[elementos];
@@ -141,5 +144,33 @@ public class ClosedHashTable<T> implements HashTable<T> {
 			return null;
 		
 	}
+	@Override
+    public Iterator<T> iterator() {
+        Iterator<T> it = new Iterator<T>() {
+
+        private int currentIndex = 0;
+        private int itemCount = 1;
+
+        @Override
+        public boolean hasNext() {
+            return itemCount < cantElementos;
+            }
+
+        @Override
+        public T next() {
+            itemCount++;
+            currentIndex++;
+            while (true) {
+                try {
+                    return hash[currentIndex].getValue();
+                } catch (NullPointerException e) {
+                    currentIndex++;
+                }
+            }
+        }
+        };
+
+        return it;
+    }
 
 }

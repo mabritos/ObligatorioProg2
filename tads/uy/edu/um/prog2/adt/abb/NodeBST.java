@@ -154,13 +154,13 @@ public class NodeBST <K extends Comparable<K>, T> {
 
 			return this;
 		}
-	public MyQueue<K> inOrdenNode(MyQueue<K> list){
+	public MyQueue<T> inOrdenNode(MyQueue<T> list){
 		if(getLeftChild()!=null) 
 			getLeftChild().inOrdenNode(list);
 		else
-			list.enqueue(this.getKey());
+			list.enqueue(this.getData());
 		if(getRightChild()!=null) {
-			list.enqueue(this.getKey());
+			list.enqueue(this.getData());
 			getRightChild().inOrdenNode(list);
 		}
 		return list;

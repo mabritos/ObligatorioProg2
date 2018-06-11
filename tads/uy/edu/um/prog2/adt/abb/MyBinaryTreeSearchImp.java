@@ -40,8 +40,8 @@ public class MyBinaryTreeSearchImp<K extends Comparable<K>, T> implements MyBina
 	public void delete(Comparable key) {
 		raiz.deleteNode(key);
 	}
-	public MyQueue<K> inOrden(){
-		MyQueue<K> list= new MyQueueImp<K>();
+	public MyQueue<T> inOrden(){
+		MyQueue<T> list= new MyQueueImp<T>();
 		return raiz.inOrdenNode(list);	
 	}
 	

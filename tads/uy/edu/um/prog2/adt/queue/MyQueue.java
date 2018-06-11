@@ -4,5 +4,6 @@ public interface MyQueue<T>{
 	T dequeue () throws EmptyQueueException; 
 	boolean isEmpty(); 
 	public T getFirst() throws EmptyQueueException;
+	public int size();
 }
 
