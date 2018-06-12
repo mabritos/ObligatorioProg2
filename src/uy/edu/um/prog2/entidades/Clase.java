@@ -17,6 +17,10 @@ public class Clase {
 	public void agregarProducto(String clave, Producto producto) throws ElementoYaExistenteException, HashCompletoException {
 		productos.insertar(clave, producto);
 	}
+	
+	public HashTable<Producto> getProductos(){
+		return productos;
+	}
 
 	public String getNombre() {
 		return nombre;

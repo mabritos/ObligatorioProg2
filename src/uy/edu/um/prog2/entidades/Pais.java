@@ -3,21 +3,33 @@ package uy.edu.um.prog2.entidades;
 import uy.edu.um.prog2.adt.abb.MyBinarySearchTree;
 import uy.edu.um.prog2.adt.abb.MyBinaryTreeSearchImp;
 import uy.edu.um.prog2.adt.hash.ClosedHashTable;
+import uy.edu.um.prog2.adt.hash.ElementoYaExistenteException;
+import uy.edu.um.prog2.adt.hash.HashCompletoException;
 import uy.edu.um.prog2.adt.hash.HashTable;
 
 public class Pais {
 
+	HashTable<Marca> marcas;
 	MyBinarySearchTree<Long,Empresa> empresas;
 	String nombre;
 
 	public Pais(String nombre) {
 		empresas = new MyBinaryTreeSearchImp<Long, Empresa>();
+		marcas = new ClosedHashTable<Marca>(211);
 		this.nombre = nombre;
 	}
 	public void agregarEmpresa(long key, Empresa e) {
 		empresas.insert(key, e);
 	}
-
+	public MyBinarySearchTree<Long, Empresa> getEmpresas(){
+		return empresas;
+	}
+	public void agregarMarca(String clave,Marca marca) throws ElementoYaExistenteException, HashCompletoException {
+		marcas.insertar(clave, marca);
+	}
+	public HashTable<Marca> getMarcas(){
+		return marcas;
+	}
 	public String getNombre() {
 		return nombre;
 	}

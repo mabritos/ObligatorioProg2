@@ -6,6 +6,7 @@ public class Producto {
 	String estado;
 	String idProducto;
 	String nroHabilitacion;
+	
 	public Producto(String nombre, String nombreFantasia, String estado, String idProducto, String nroHabilitacion) {
 		super();
 		this.nombre = nombre;

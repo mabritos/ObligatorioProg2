@@ -24,8 +24,9 @@ public class Node<T> {
 	}
 	public int getsize(int e) {
 		if(getNext()!=null) {
-			e =getNext().getsize(e);
 			e++;
+			e =getNext().getsize(e);
+			
 			}
 		
 		return e;

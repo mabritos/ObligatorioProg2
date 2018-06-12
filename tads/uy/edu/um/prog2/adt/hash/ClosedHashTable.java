@@ -16,6 +16,7 @@ public class ClosedHashTable<T> implements HashTable<T> {
 	@Override
 	public void insertar(String clave, T valor) throws ElementoYaExistenteException, HashCompletoException {
 		Node<T> node = new Node<T>(clave, valor);
+		cantElementos++;
 		int pos = Math.abs(clave.hashCode() % hash.length);
 			/*if(pertenece(clave)==true)
 				throw new ElementoYaExistenteException("Elemento ya existente en el Hash");
@@ -38,7 +39,7 @@ public class ClosedHashTable<T> implements HashTable<T> {
 						//arraycopy(Object src, int srcPos,
 	                            // Object dest, int destPos, int length)
 						int e = 0;
-						Node<T>[] hash1 = new Node[hash.length*2];
+						Node<T>[] hash1 = new Node[hash.length+hash.length/2];
 						for(int n = 0; n<hash.length;n++) {
 							hash1[n] = hash[n];
 							e = n;
@@ -84,7 +85,7 @@ public class ClosedHashTable<T> implements HashTable<T> {
 		
 	}
 	
-	public int fHash(String clave) {
+	/*public int fHash(String clave) {
 		int suma = 0;
 		int cantidadValores = clave.length();
 		
@@ -95,7 +96,7 @@ public class ClosedHashTable<T> implements HashTable<T> {
 		int avg = suma/cantidadValores;
 		
 		return avg%hash.length;
-	}
+	}*/
 	
 	public int fHashCollisions(String clave, int pos) {
 		int i = 0;
@@ -158,15 +159,15 @@ public class ClosedHashTable<T> implements HashTable<T> {
 
         @Override
         public T next() {
-            itemCount++;
-            currentIndex++;
-            while (true) {
-                try {
-                    return hash[currentIndex].getValue();
-                } catch (NullPointerException e) {
-                    currentIndex++;
-                }
-            }
+        	while(hash[currentIndex]==null) {
+        		currentIndex++;
+        	} 
+        	itemCount++;
+            T esto = hash[currentIndex].getValue();
+        	
+        	
+            
+			return esto;
         }
         };
 

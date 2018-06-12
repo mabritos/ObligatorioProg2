@@ -46,8 +46,8 @@ public class MyBinaryTreeSearchImp<K extends Comparable<K>, T> implements MyBina
 	}
 	
 	@Override
-	public MyQueue<K> preOrden() {
-		MyQueue<K> list = new MyQueueImp<K>();
+	public MyQueue<T> preOrden() {
+		MyQueue<T> list = new MyQueueImp<T>();
 		return raiz.preOrdenNode(list);
 	}
 	@Override

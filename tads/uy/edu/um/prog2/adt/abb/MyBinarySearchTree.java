@@ -8,6 +8,6 @@ public interface MyBinarySearchTree <K extends Comparable<K>, T>{
 	void delete (K key);
 	boolean isEmpty();
 	MyQueue<T> inOrden();
-	MyQueue<K> preOrden();
+	MyQueue<T> preOrden();
 	MyQueue<K> postOrden();
 }

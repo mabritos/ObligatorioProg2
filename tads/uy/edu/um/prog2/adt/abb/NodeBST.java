@@ -166,8 +166,8 @@ public class NodeBST <K extends Comparable<K>, T> {
 		return list;
 	}
 	
-	public MyQueue<K> preOrdenNode(MyQueue<K> list){
-		list.enqueue(this.getKey());
+	public MyQueue<T> preOrdenNode(MyQueue<T> list){
+		list.enqueue(this.getData());
 		if(getLeftChild()!=null)
 			getLeftChild().preOrdenNode(list);
 		if(getRightChild()!=null)
