@@ -146,6 +146,7 @@ public class Main {
 		 }
 		 
 		 reporte1(empresas);
+		 reporte2(paises);
 		 double endTime = System.nanoTime();
 		 System.out.println("Took "+(endTime - startTime)/1000000000 + " s");
 		 
