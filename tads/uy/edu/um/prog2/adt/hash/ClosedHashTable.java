@@ -5,7 +5,7 @@ import java.util.Iterator;
 public class ClosedHashTable<T> implements HashTable<T> {
 
 	private Node<T>[] hash;
-	private int cantElementos;
+	private int cantElementos =0;
 	
 	public ClosedHashTable(int elementos) {
 		hash = new Node[elementos];
@@ -14,9 +14,9 @@ public class ClosedHashTable<T> implements HashTable<T> {
 		hash = new Node[10];
 	}
 	@Override
-	public void insertar(String clave, T valor) throws ElementoYaExistenteException, HashCompletoException {
+	public void insertar(String clave, T valor) throws ElementoYaExistenteException {
 		Node<T> node = new Node<T>(clave, valor);
-		cantElementos++;
+		
 		int pos = Math.abs(clave.hashCode() % hash.length);
 			/*if(pertenece(clave)==true)
 				throw new ElementoYaExistenteException("Elemento ya existente en el Hash");
@@ -51,6 +51,7 @@ public class ClosedHashTable<T> implements HashTable<T> {
 			}
 			else
 				hash[pos] = node;
+			
 	}
 
 	
@@ -159,20 +160,25 @@ public class ClosedHashTable<T> implements HashTable<T> {
 
         	@Override
         	public boolean hasNext() {
-        		return itemCount < cantElementos;
+        		return itemCount <= cantElementos;
             	}
 
         	@Override
         	public T next() {
-        		itemCount++;
-        		currentIndex++;
+
         		
         		while(hash[currentIndex]==null) {
         				currentIndex++;
         		} 
         		
-        		T esto = hash[currentIndex].getValue();
-        		return esto;
+        		
+        		T temp = hash[currentIndex].getValue(); 
+        	
+        		currentIndex++;
+        		itemCount++;
+        		
+        		return temp;
+        		
         	}
         };
         return it;

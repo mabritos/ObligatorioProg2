@@ -2,30 +2,63 @@ package uy.edu.um.prog2.entidades;
 
 public class Producto {
 	String nombre;
-	String nombreFantasia;
 	String estado;
 	String idProducto;
 	String nroHabilitacion;
+	Pais pais;
+	Empresa empresa;
+	Marca marca;
+	Clase clase;
 	
-	public Producto(String nombre, String nombreFantasia, String estado, String idProducto, String nroHabilitacion) {
+	
+	public Producto(String nombre, String estado, String idProducto, String nroHabilitacion, Pais pais, Empresa empresa, Marca marca, Clase clase) {
 		super();
+		this.pais = pais;
 		this.nombre = nombre;
-		this.nombreFantasia = nombreFantasia;
 		this.estado = estado;
 		this.idProducto = idProducto;
 		this.nroHabilitacion = nroHabilitacion;
+		this.empresa = empresa;
+		this.marca = marca;
+		this.clase = clase;
 	}
+	
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+
+	public Marca getMarca() {
+		return marca;
+	}
+
+	public void setMarca(Marca marca) {
+		this.marca = marca;
+	}
+
+	public Clase getClase() {
+		return clase;
+	}
+
+	public void setClase(Clase clase) {
+		this.clase = clase;
+	}
+
+	public void setPais(Pais pais) {
+		this.pais = pais;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
+	public Pais getPais() {
+		return pais;
+	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-	public String getNombreFantasia() {
-		return nombreFantasia;
-	}
-	public void setNombreFantasia(String nombreFantasia) {
-		this.nombreFantasia = nombreFantasia;
 	}
 	public String getEstado() {
 		return estado;

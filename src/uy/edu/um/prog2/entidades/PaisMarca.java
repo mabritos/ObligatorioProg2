@@ -12,6 +12,9 @@ public class PaisMarca implements Comparable<PaisMarca> {
 		this.marca = marca;
 		this.prodHab = prodHab;
 	}
+	public void sumarProdHab() {
+		prodHab++;
+	}
 	
 	public PaisMarca() {
 		
