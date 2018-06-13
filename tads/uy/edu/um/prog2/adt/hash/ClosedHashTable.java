@@ -53,6 +53,11 @@ public class ClosedHashTable<T> implements HashTable<T> {
 				hash[pos] = node;
 	}
 
+	
+	public int getCantElementos() {
+		return cantElementos;
+	}
+	
 	@Override
 	public boolean pertenece(String clave) {
 		boolean belongs = false;
@@ -136,7 +141,7 @@ public class ClosedHashTable<T> implements HashTable<T> {
 	}*/
 	public T get(String clave) {
 		if(pertenece(clave) == true) {
-			int pos = Math.abs(clave.hashCode() % hash.length);;
+			int pos = Math.abs(clave.hashCode() % hash.length);
 			int newPos =  fHashCollisions(clave,pos)+pos;
 			return hash[newPos].getValue();
 			
@@ -149,8 +154,36 @@ public class ClosedHashTable<T> implements HashTable<T> {
     public Iterator<T> iterator() {
         Iterator<T> it = new Iterator<T>() {
 
-        private int currentIndex = 0;
-        private int itemCount = 1;
+        	private int currentIndex = 0;
+        	private int itemCount = 1;
+
+        	@Override
+        	public boolean hasNext() {
+        		return itemCount < cantElementos;
+            	}
+
+        	@Override
+        	public T next() {
+        		itemCount++;
+        		currentIndex++;
+        		
+        		while(hash[currentIndex]==null) {
+        				currentIndex++;
+        		} 
+        		
+        		T esto = hash[currentIndex].getValue();
+        		return esto;
+        	}
+        };
+        return it;
+    }
+	
+	/* @Override
+    public Iterator<T> iterator() {
+        Iterator<T> it = new Iterator<T>() {
+
+        private int    currentIndex     = 0;
+        private int    itemCount        = 1;
 
         @Override
         public boolean hasNext() {
@@ -159,19 +192,18 @@ public class ClosedHashTable<T> implements HashTable<T> {
 
         @Override
         public T next() {
-        	while(hash[currentIndex]==null) {
-        		currentIndex++;
-        	} 
-        	itemCount++;
-            T esto = hash[currentIndex].getValue();
-        	
-        	
-            
-			return esto;
+            itemCount++;
+            currentIndex++;
+            while (true) {
+                try {
+                    return hash[currentIndex].getValue();
+                } catch (NullPointerException e) {
+                    currentIndex++;
+                }
+            }
         }
         };
 
         return it;
-    }
-
+    } */
 }

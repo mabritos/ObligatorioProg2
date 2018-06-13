@@ -33,6 +33,10 @@ public class Marca {
 		return prodxPais;
 	}
 	
+	public void setProdxPais(int prodxPais) {
+		this.prodxPais = prodxPais;
+	}
+
 	public HashTable<Clase> getClases(){
 		return clases;
 	}

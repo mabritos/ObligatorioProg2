@@ -28,6 +28,7 @@ public class Main {
 		Empresa[] arrayEmpresas = new Empresa[newEmpresa.size()];
 		while(newEmpresa.isEmpty()==false) {
 			Empresa empresa1 = newEmpresa.dequeue();
+			empresa1.setCantPHab(0);
 			Iterator<Producto> iterator1 = empresa1.getProductos().iterator();
 			while(iterator1.hasNext()) {
 				Producto producto1 = iterator1.next();
@@ -40,29 +41,54 @@ public class Main {
 		AlgoritmosOrdenamiento<Empresa> o = new BubbleSort();
 		arrayEmpresas =  o.order(arrayEmpresas);
 		for(int i =arrayEmpresas.length-1; i>(arrayEmpresas.length-20);i--) {
-			System.out.println(arrayEmpresas[i].getNombre() +" "+ arrayEmpresas[i].getCantPHab());
+			System.out.println(arrayEmpresas[i].getNombre() +" Tiene "+ arrayEmpresas[i].getCantPHab()+" Productos Hab.");
 		}
 		
 		 
 	 }
 	
 	private static void reporte2(HashTable<Pais> paises) {
+		PaisMarca[] relacionesPM = new PaisMarca[6332];
+		int x = 0;
 		Iterator<Pais> iterator1 = paises.iterator();
 		while(iterator1.hasNext()) {
-			HashTable<Marca> marca1 =iterator1.next().getMarcas();
+			PaisMarca pM1 = new PaisMarca();
+			Pais pais1 = iterator1.next();
+			pM1.setPais(pais1);
+			HashTable<Marca> marca1 =pais1.getMarcas();
 			Iterator<Marca> iterator2 = marca1.iterator();
 			while(iterator2.hasNext()) {
+				try {
 				Marca marca2 = iterator2.next();
+				pM1.setMarca(marca2);
+				marca2.setProdxPais(0);
 				HashTable<Producto> producto1 = marca2.getProductos();
 				Iterator<Producto> iterator3 = producto1.iterator();
 				while(iterator3.hasNext()) {
+					try {
 					Producto producto2 = iterator3.next();
 					if(producto2.getEstado().equals("HABILITADO"))
 						marca2.agregarProdxPais();
+					}catch(Exception e){
+						break;
+					}
+				}
+				pM1.setProdHab(marca2.getProdxPais());
+				}catch(Exception e) {
+					break;
 				}
 			}
+			relacionesPM[x] = pM1;
+			x++;
 		}
-		
+		PaisMarca[] relacionesPMFix = new PaisMarca[x];
+		for(int i = 0; i< x; i++) {
+			relacionesPMFix[i] = relacionesPM[i];
+		} // Contador, Pais o Marca
+		AlgoritmosOrdenamiento<PaisMarca> o = new BubbleSort();
+		relacionesPMFix = o.order(relacionesPMFix);
+		for(int i = relacionesPMFix.length-1; i > relacionesPMFix.length-10; i--)
+			System.out.println(relacionesPMFix[i].getMarca().getNombre()+" de "+relacionesPMFix[i].getPais().getNombre()+" tiene "+relacionesPMFix[i].getProdHab()+" productos Hab.");
 	}
 
 
@@ -111,7 +137,8 @@ public class Main {
 				 marca.agregarProducto(nextLine[0]+nextLine[2]+nextLine[4], producto);
 				 marcas.insertar(nextLine[12], marca);
 			 }else {
-				 marcas.get(nextLine[12]).agregarClase(nextLine[10], clases.get(nextLine[10]));
+				 if(!marcas.get(nextLine[12]).getClases().pertenece(nextLine[10]))
+					 marcas.get(nextLine[12]).agregarClase(nextLine[10], clases.get(nextLine[10]));
 				 marcas.get(nextLine[12]).agregarProducto(nextLine[0]+nextLine[2]+nextLine[4], producto);
 			 }
 			 
@@ -121,16 +148,16 @@ public class Main {
 					 empresa.setProductos(nextLine[0]+nextLine[2]+nextLine[4], producto);
 					 empresa.agregarMarca(nextLine[12], marcas.get(nextLine[12]));
 					 empresas.insert(Long.valueOf(nextLine[23]), empresa);
-					// System.out.println(nextLine[5]);contador++;
-				 }
+				 }else if(!empresas.find(Long.valueOf(nextLine[23])).getMarcas().pertenece(nextLine[12]))
+					 empresas.find(Long.valueOf(nextLine[23])).agregarMarca(nextLine[12], marcas.get(nextLine[12]));
 			 }
 			 else {
 				 empresa = new Empresa(nextLine[5], nextLine[23]);
 				 empresa.agregarMarca(nextLine[12], marcas.get(nextLine[12]));
 				 empresas.insert(Long.valueOf(nextLine[23]), empresa);
-				// System.out.println(nextLine[5]);contador++;
 			 }
 			 empresas.find(Long.valueOf(nextLine[23])).setProductos(nextLine[0]+nextLine[2]+nextLine[4], producto);
+			
 			
 			 marca = marcas.get(nextLine[12]);
 			 if(!paises.pertenece(nextLine[13])) {
@@ -139,13 +166,15 @@ public class Main {
 				 pais.agregarMarca(nextLine[12],marca);
 				 paises.insertar(nextLine[13], pais);
 			 }else {
-				 paises.get(nextLine[13]).agregarEmpresa(Long.valueOf(nextLine[23]), empresas.find(Long.valueOf(nextLine[23])));
-				 paises.get(nextLine[13]).agregarMarca(nextLine[12],marca);
+				 if(paises.get(nextLine[13]).getEmpresas().find(Long.valueOf(nextLine[23])) == null)
+					 paises.get(nextLine[13]).agregarEmpresa(Long.valueOf(nextLine[23]), empresas.find(Long.valueOf(nextLine[23])));
+				 if(!paises.get(nextLine[13]).getMarcas().pertenece(nextLine[12]))
+					 paises.get(nextLine[13]).agregarMarca(nextLine[12],marca);
 			 }
 			
 		 }
 		 
-		 reporte1(empresas);
+		 //reporte1(empresas);
 		 reporte2(paises);
 		 double endTime = System.nanoTime();
 		 System.out.println("Took "+(endTime - startTime)/1000000000 + " s");
