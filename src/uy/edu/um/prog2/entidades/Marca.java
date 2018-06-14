@@ -9,8 +9,8 @@ public class Marca {
 
 	private String nombre;
 	private int prodxPais = 0;
-	private HashTable<Clase> clases = new ClosedHashTable<Clase>(211);
-	private HashTable<Producto> productos = new ClosedHashTable<Producto>(211);
+	private HashTable<String, Clase> clases = new ClosedHashTable<String, Clase>(211);
+	private HashTable<String, Producto> productos = new ClosedHashTable<String, Producto>(211);
 	
 	public Marca(String nombre) {
 		this.nombre = nombre;
@@ -25,7 +25,7 @@ public class Marca {
 	public void agregarProducto(String clave, Producto producto) throws ElementoYaExistenteException, HashCompletoException {
 		productos.insertar(clave, producto);
 	}
-	public HashTable<Producto> getProductos(){
+	public HashTable<String, Producto> getProductos(){
 		return productos;
 	}
 	
@@ -37,7 +37,7 @@ public class Marca {
 		this.prodxPais = prodxPais;
 	}
 
-	public HashTable<Clase> getClases(){
+	public HashTable<String, Clase> getClases(){
 		return clases;
 	}
 

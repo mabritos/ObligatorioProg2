@@ -24,11 +24,11 @@ public class Main {
 		 Clase clase;
 		 Pais pais;
 	 
-		 HashTable<Pais> paises = new ClosedHashTable<Pais>(211);
-		 HashTable<Empresa> empresas = new ClosedHashTable<Empresa>(1721);
-		 HashTable<Marca> marcas = new ClosedHashTable<Marca>(5107);
-		 HashTable<Clase> clases = new ClosedHashTable<Clase>(719);
-		 HashTable<Producto> productos = new ClosedHashTable<Producto>(50363);
+		 HashTable<String, Pais> paises = new ClosedHashTable<String, Pais>(211);
+		 HashTable<String, Empresa> empresas = new ClosedHashTable<String, Empresa>(1721);
+		 HashTable<String, Marca> marcas = new ClosedHashTable<String, Marca>(9461);
+		 HashTable<String, Clase> clases = new ClosedHashTable<String, Clase>(877);
+		 HashTable<String, Producto> productos = new ClosedHashTable<String, Producto>(50363);
 	
 		 double startTime = System.nanoTime();
 		 nextLine = reader.readNext();
@@ -51,13 +51,13 @@ public class Main {
 				 clases.insertar(nextLine[10], clase);
 			 }
 			 
-			 producto = new Producto(nextLine[0], nextLine[20], nextLine[2], nextLine[4], paises.get(nextLine[13]), empresas.get(nextLine[23]), marcas.get(nextLine[12]), clases.get(nextLine[10]));
+			 producto = new Producto(nextLine[0], nextLine[20], nextLine[2], nextLine[4], paises.obtener(nextLine[13]), empresas.obtener(nextLine[23]), marcas.obtener(nextLine[12]), clases.obtener(nextLine[10]));
 			 productos.insertar(nextLine[0]+nextLine[2]+nextLine[4], producto);
 		 }
 		 Reportes r1 = new Reportes();
-		 //r1.reporte1(empresas, productos);
+		 r1.reporte1(empresas, productos);
 		 //r1.reporte2(productos);
-		 r1.reporte3(paises, productos);
+		 //r1.reporte3(paises, productos);
 		 
 		
 		 

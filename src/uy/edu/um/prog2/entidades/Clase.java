@@ -8,7 +8,7 @@ import uy.edu.um.prog2.adt.hash.HashTable;
 public class Clase {
 
 	private String nombre;
-	private HashTable<Producto> productos = new ClosedHashTable<Producto>(211);
+	private HashTable<String, Producto> productos = new ClosedHashTable<String, Producto>(211);
 
 	public Clase(String nombre) {
 		super();
@@ -18,7 +18,7 @@ public class Clase {
 		productos.insertar(clave, producto);
 	}
 	
-	public HashTable<Producto> getProductos(){
+	public HashTable<String, Producto> getProductos(){
 		return productos;
 	}
 

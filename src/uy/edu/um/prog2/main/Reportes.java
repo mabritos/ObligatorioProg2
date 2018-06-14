@@ -17,7 +17,7 @@ import uy.edu.um.prog2.entidades.*;
 
 public class Reportes {
 	
-	public void reporte1(HashTable<Empresa> empresas, HashTable<Producto> productos) {
+	public void reporte1(HashTable<String, Empresa> empresas, HashTable<String, Producto> productos) {
 		
 		Iterator<Empresa> it3 = empresas.iterator();
 		while(it3.hasNext()) {
@@ -31,7 +31,7 @@ public class Reportes {
 			}
 		}
 		int cantidad = empresas.getCantElementos();
-		Empresa[] empresas2 = new Empresa[cantidad-1];
+		Empresa[] empresas2 = new Empresa[cantidad];
 		Iterator<Empresa> it2 = empresas.iterator();
 		for(int x =0; it2.hasNext();x++) {
 			empresas2[x] = it2.next();
@@ -42,8 +42,8 @@ public class Reportes {
 			System.out.println(empresas2[x].getNombre()+" tiene "+empresas2[x].getCantPHab()+" productos habilitados");
 	}
 	
-	public void reporte2(HashTable<Producto> productos) throws ElementoYaExistenteException {
-		HashTable<PaisMarca> paisesXmarca = new ClosedHashTable<PaisMarca>(8011); //key = nombre Pais + nombre marca
+	public void reporte2(HashTable<String, Producto> productos) throws ElementoYaExistenteException {
+		HashTable<String, PaisMarca> paisesXmarca = new ClosedHashTable<String, PaisMarca>(8011); //key = nombre Pais + nombre marca
 		Iterator<Producto> it1 = productos.iterator();
 		while(it1.hasNext()) {
 			PaisMarca pm1 = new PaisMarca();
@@ -53,12 +53,12 @@ public class Reportes {
 			if(!paisesXmarca.pertenece(producto1.getPais().getNombre()+producto1.getMarca().getNombre())) {
 				paisesXmarca.insertar(producto1.getPais().getNombre()+producto1.getMarca().getNombre(), pm1);
 				if(producto1.getEstado().equals("HABILITADO"))
-					paisesXmarca.get(producto1.getPais().getNombre()+producto1.getMarca().getNombre()).sumarProdHab();
+					paisesXmarca.obtener(producto1.getPais().getNombre()+producto1.getMarca().getNombre()).sumarProdHab();
 			}else if(producto1.getEstado().equals("HABILITADO"))
-				paisesXmarca.get(producto1.getPais().getNombre()+producto1.getMarca().getNombre()).sumarProdHab();
+				paisesXmarca.obtener(producto1.getPais().getNombre()+producto1.getMarca().getNombre()).sumarProdHab();
 		}
 		int cantidad = paisesXmarca.getCantElementos();
-		PaisMarca[] paisesXmarca2 = new PaisMarca[cantidad-1];
+		PaisMarca[] paisesXmarca2 = new PaisMarca[cantidad];
 		Iterator<PaisMarca> it2 = paisesXmarca.iterator();
 		for(int x=0; it2.hasNext(); x++)
 			paisesXmarca2[x] = it2.next();
@@ -69,7 +69,7 @@ public class Reportes {
 		
 	}
 	
-	public void reporte3(HashTable<Pais> paises, HashTable<Producto> productos) {
+	public void reporte3(HashTable<String, Pais> paises, HashTable<String, Producto> productos) {
 		Iterator<Producto> it1 = productos.iterator();
 		Iterator<Pais> it2 = paises.iterator();
 		while(it2.hasNext()) {
@@ -81,7 +81,7 @@ public class Reportes {
 			if(p1.getEstado().equals("HABILITADO"))
 				p1.getPais().agregarPHab();
 		}
-		Pais[] paisesarray = new Pais[paises.getCantElementos()-1];
+		Pais[] paisesarray = new Pais[paises.getCantElementos()];
 		Iterator<Pais> it3 = paises.iterator();
 		int x =0;
 		while(it3.hasNext()) {
@@ -95,7 +95,7 @@ public class Reportes {
 			System.out.println(paisesarray[i].getNombre()+" "+paisesarray[i].getPHab());
 	
 		
-	}
+	} // refinar y agregar %
 	
 	
 

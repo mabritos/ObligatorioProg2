@@ -2,214 +2,175 @@ package uy.edu.um.prog2.adt.hash;
 
 import java.util.Iterator;
 
-public class ClosedHashTable<T> implements HashTable<T> {
+public class ClosedHashTable<K, T> implements HashTable<K, T>, Iterable<T> {
+	private Node<K, T>[] hash;
+	private int size;
+	private int cantElementos;
 
-	private Node<T>[] hash;
-	private int cantElementos =0;
-	
-	public ClosedHashTable(int elementos) {
-		hash = new Node[elementos];
+	public ClosedHashTable(int sizeInicial) {
+		hash = new Node[sizeInicial];
+		size = sizeInicial;
+		cantElementos = 0;
 	}
-	public ClosedHashTable() {
-		hash = new Node[10];
-	}
-	@Override
-	public void insertar(String clave, T valor) throws ElementoYaExistenteException {
-		Node<T> node = new Node<T>(clave, valor);
+
+	public void insertar(K key, T value) {
+		Node<K, T> newNode = new Node<K, T>(key, value);
 		
-		int pos = Math.abs(clave.hashCode() % hash.length);
-			/*if(pertenece(clave)==true)
-				throw new ElementoYaExistenteException("Elemento ya existente en el Hash");
+		if (cantElementos == size) {
+			agrandarHash();
+		}
+		
+		int posicion = Math.abs(key.hashCode()) % size;
+		
+		if (hash[posicion] == null || hash[posicion].isEliminado())
+			hash[posicion] = newNode;
+		else {
 			
-			else */if(hash[pos]!=null) {
-				int x = 0;
-				while(x+pos<hash.length-1 && hash[x+pos]!=null) {
-					x++;
+			int posAux 		= posicion;
+			int cuadratica	= 1;
+			
+			while (hash[posAux] != null && !hash[posAux].isEliminado()) {
+				
+				posAux++;
+				if (posAux >= size) {
+					posAux = 0;
 				}
-				if(hash[x+pos]==null)
-					hash[x+pos] = node;
-				else {
-					int i = 0;
-					while(i+pos>0 && hash[i+pos]!=null) {
-						i--;
+			}
+			hash[posAux] = newNode;
+		}
+		cantElementos++;
+	}
+
+	public boolean pertenece(K clave) {
+		boolean pertenece 	= false;
+		int 	posEsperada = Math.abs(clave.hashCode()) % size;
+		
+		
+		if (hash[posEsperada]	!= null) {
+			
+			if (hash[posEsperada].getClave().equals(clave) && hash[posEsperada].isEliminado() == false) {
+				pertenece = true;
+			} else {
+				posEsperada++;
+				int cantRecorridas=0;
+				while (cantRecorridas<size && (hash[posEsperada] != null && !hash[posEsperada].getClave().equals(clave))) {
+					posEsperada++;
+					if(posEsperada>=size) {
+						posEsperada=0;
 					}
-					if(hash[i+pos]==null)
-						hash[i+pos] = node;
-					else {
-						//arraycopy(Object src, int srcPos,
-	                            // Object dest, int destPos, int length)
-						int e = 0;
-						Node<T>[] hash1 = new Node[hash.length+hash.length/2];
-						for(int n = 0; n<hash.length;n++) {
-							hash1[n] = hash[n];
-							e = n;
-						}
-						hash = hash1;
-						hash[e]=node;
+					cantRecorridas++;
+				}
+				if (posEsperada < hash.length && hash[posEsperada]!=null) {
+					if (hash[posEsperada].getClave().equals(clave) && hash[posEsperada].isEliminado() == false) {
+						pertenece = true;
 					}
 				}
-			}
-			else
-				hash[pos] = node;
-			
+			}	
+		}
+		return pertenece;
 	}
 
-	
-	public int getCantElementos() {
-		return cantElementos;
-	}
-	
-	@Override
-	public boolean pertenece(String clave) {
-		boolean belongs = false;
-		int pos = Math.abs(clave.hashCode() % hash.length);;
-		if(hash[pos]!=null) {
-			if(hash[pos].getKey().equals(clave))
-				belongs = true;
-			}
-		if(belongs == false) {
-			for(int x = 0; x<hash.length && belongs==false; x++) {
-				if (hash[x]!=null) {
-					if(hash[x].getKey().equals(clave))
-						belongs = true;
-				}
-			}
-		}	
-		return belongs;
+	public void borrar(K clave) throws ElementoNoExisteException {
+		if (pertenece(clave)) {
+			get(clave).setEliminado(true);
+			cantElementos--;
+		} else {
+			throw new ElementoNoExisteException();
+		}
 	}
 
-	@Override
-	public void borrar(String clave) throws ElementoNoExisteException {
-		if(pertenece(clave) == true) {
-			int pos = Math.abs(clave.hashCode() % hash.length);;
-			int newPos =  fHashCollisions(clave,pos)+pos;
-			hash[newPos] = null;
-			
-		}
-		else 
-			throw new ElementoNoExisteException("Elemento no existe en el hash");
-		
-	}
-	
-	/*public int fHash(String clave) {
-		int suma = 0;
-		int cantidadValores = clave.length();
-		
-		for(int x = 0; x<clave.length();x++) {
-			suma = suma +clave.codePointAt(x);
-		}
-		
-		int avg = suma/cantidadValores;
-		
-		return avg%hash.length;
-	}*/
-	
-	public int fHashCollisions(String clave, int pos) {
-		int i = 0;
-		boolean ret = false;
-		if(hash[pos]!=null) {
-			if(hash[pos].getKey().equals(clave)) {
-				ret = true;
-			}
-		}
-		if(ret == false) {
-			for(int x =0;x+pos<hash.length && ret == false;x++) {
-				if(hash[x+pos]!=null) {
-					if(hash[x+pos].getKey().equals(clave))
-						ret = true;
-				}
-				i = x;
-			}
-			
-			if(ret == false) {
-				for(int x=0;x+pos>-1 && ret == false; x--) {
-					if(hash[x+pos]!=null) {
-						if(hash[x+pos].getKey().equals(clave))
-							ret = true;
+	private void agrandarHash() {
+		int nuevoSize = 2 * size;
+		Node<K, T>[] vectorNuevo = new Node[nuevoSize];
+		for (int i = 0; i < size; i++) {
+			K claveAux = hash[i].getClave();
+			T valorAux = hash[i].getValor();
+
+			int posicion = Math.abs(claveAux.hashCode() % nuevoSize);
+			if (vectorNuevo[posicion] == null) {
+				vectorNuevo[posicion] = hash[i];
+			} else {
+				int posAux = posicion;
+				int cuadratica=1;
+				while (hash[posAux] != null && hash[posAux].isEliminado()) {
+						
+					posAux++;
+					if (posAux >= size) {
+						posAux = 0;
 					}
-					i = x;
 				}
+				vectorNuevo[posAux] = hash[i];
 			}
 		}
-			
-		
-		return i;
+		size = nuevoSize;
+		hash = vectorNuevo;
 	}
-	/*public T get(String clave){
-		int pos = fHash(clave);
-		return hash[fHashCollisions(clave, pos)].getValue();
-		
-	}*/
-	public T get(String clave) {
-		if(pertenece(clave) == true) {
-			int pos = Math.abs(clave.hashCode() % hash.length);
-			int newPos =  fHashCollisions(clave,pos)+pos;
-			return hash[newPos].getValue();
-			
+
+	private Node<K, T> get(K clave) {
+		Node<K, T> nodo = null;
+		int posEsperada = Math.abs(clave.hashCode()) % size;
+		if (hash[posEsperada].getClave().equals(clave) && hash[posEsperada].isEliminado() == false) {
+			nodo = hash[posEsperada];
+		} else {
+			posEsperada++;
+			while (posEsperada < hash.length && (hash[posEsperada] != null && !hash[posEsperada].getClave().equals(clave))) {
+				posEsperada++;
+			}
+			if (hash[posEsperada].getClave().equals(clave) && hash[posEsperada].isEliminado() == false) {
+				nodo = hash[posEsperada];
+			}
 		}
-		else 
-			return null;
-		
+		return nodo;
 	}
-	@Override
-    public Iterator<T> iterator() {
-        Iterator<T> it = new Iterator<T>() {
-
-        	private int currentIndex = 0;
-        	private int itemCount = 1;
-
-        	@Override
-        	public boolean hasNext() {
-        		return itemCount <= cantElementos;
-            	}
-
-        	@Override
-        	public T next() {
-
-        		
-        		while(hash[currentIndex]==null) {
-        				currentIndex++;
-        		} 
-        		
-        		
-        		T temp = hash[currentIndex].getValue(); 
-        	
-        		currentIndex++;
-        		itemCount++;
-        		
-        		return temp;
-        		
-        	}
-        };
-        return it;
-    }
 	
-	/* @Override
-    public Iterator<T> iterator() {
-        Iterator<T> it = new Iterator<T>() {
+	public T obtener(K clave) {
+		Node<K, T> nodo = null;
+		int posEsperada = Math.abs(clave.hashCode()) % size;
+		if (hash[posEsperada].getClave().equals(clave) && hash[posEsperada].isEliminado() == false) {
+			nodo = hash[posEsperada];
+		} else {
+			posEsperada++;
+			while (posEsperada < hash.length && (hash[posEsperada] != null && !hash[posEsperada].getClave().equals(clave))) {
+				posEsperada++;
+			}
+			if (hash[posEsperada].getClave().equals(clave) && hash[posEsperada].isEliminado() == false) {
+				nodo = hash[posEsperada];
+			}
+		}
+		return nodo.getValor();
+	}
 
-        private int    currentIndex     = 0;
-        private int    itemCount        = 1;
+	@Override
+	public Iterator<T> iterator() {
+		Iterator<T> it = new Iterator<T>() {
+
+        private int	currentIndex 	= 0;
+        private	int itemCount		= 1;	
 
         @Override
         public boolean hasNext() {
-            return itemCount < cantElementos;
+        	return itemCount <= cantElementos;
             }
 
         @Override
         public T next() {
+            
+            while (hash[currentIndex] == null) 
+            	currentIndex++;
+            
+            T temp = hash[currentIndex].getValor();
             itemCount++;
             currentIndex++;
-            while (true) {
-                try {
-                    return hash[currentIndex].getValue();
-                } catch (NullPointerException e) {
-                    currentIndex++;
-                }
+            return temp;
             }
-        }
-        };
+        
+		};
+		
+		return it;
+	}
 
-        return it;
-    } */
+	public int getCantElementos() {
+		return cantElementos;
+	}
+
 }

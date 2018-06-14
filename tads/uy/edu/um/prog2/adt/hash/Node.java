@@ -1,25 +1,40 @@
 package uy.edu.um.prog2.adt.hash;
 
-public class Node<T> {
-	private String key;
-	private T value;
+public class Node<K, T> {
 	
-	public Node(String key, T value){
-		this.key = key;
-		this.value = value;
+	private K clave;
+	private T valor;
+	private boolean eliminado;
+
+	public Node(K clave, T valor) {
+		super();
+		this.clave = clave;
+		this.valor = valor;
+		eliminado=false;
 	}
-	public String getKey() {
-		return key;
+
+	public K getClave() {
+		return clave;
 	}
-	public void setKey(String key) {
-		this.key = key;
+
+	public void setClave(K clave) {
+		this.clave = clave;
 	}
-	public T getValue() {
-		return value;
+
+	public T getValor() {
+		return valor;
 	}
-	public void setValue(T value) {
-		this.value = value;
+
+	public void setValor(T valor) {
+		this.valor = valor;
 	}
-	
-	
+
+	public boolean isEliminado() {
+		return eliminado;
+	}
+
+	public void setEliminado(boolean eliminado) {
+		this.eliminado = eliminado;
+	}
+
 }

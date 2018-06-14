@@ -10,8 +10,8 @@ public class Empresa implements Comparable<Empresa> {
 	private	String nombre;
 	private String ruc;
 	private int cantPHab=0;
-	private HashTable<Marca> marcas = new ClosedHashTable<>(211);
-	private HashTable<Producto> productos = new ClosedHashTable<Producto>(211);
+	private HashTable<String, Marca> marcas = new ClosedHashTable<>(211);
+	private HashTable<String, Producto> productos = new ClosedHashTable<String, Producto>(211);
 	
 	public Empresa(String nombre, String ruc) {
 		super();
@@ -27,7 +27,7 @@ public class Empresa implements Comparable<Empresa> {
 	public void setCantPHab(int cantPHab) {
 		this.cantPHab = cantPHab;
 	}
-	public HashTable<Producto> getProductos() {
+	public HashTable<String, Producto> getProductos() {
 		return productos;
 	}
 	public void setProductos(String clave, Producto producto) throws ElementoYaExistenteException, HashCompletoException {

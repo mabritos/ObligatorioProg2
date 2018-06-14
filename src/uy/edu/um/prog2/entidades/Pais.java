@@ -9,14 +9,14 @@ import uy.edu.um.prog2.adt.hash.HashTable;
 
 public class Pais implements Comparable<Pais> {
 
-	HashTable<Marca> marcas;
+	HashTable<String, Marca> marcas;
 	MyBinarySearchTree<Long,Empresa> empresas;
 	String nombre;
 	int cantidadPHab = 0;
 
 	public Pais(String nombre) {
 		empresas = new MyBinaryTreeSearchImp<Long, Empresa>();
-		marcas = new ClosedHashTable<Marca>(211);
+		marcas = new ClosedHashTable<String, Marca>(211);
 		this.nombre = nombre;
 	}
 	public void agregarPHab() {
@@ -37,7 +37,7 @@ public class Pais implements Comparable<Pais> {
 	public void agregarMarca(String clave,Marca marca) throws ElementoYaExistenteException, HashCompletoException {
 		marcas.insertar(clave, marca);
 	}
-	public HashTable<Marca> getMarcas(){
+	public HashTable<String, Marca> getMarcas(){
 		return marcas;
 	}
 	public String getNombre() {
