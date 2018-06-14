@@ -13,6 +13,7 @@ public class Pais implements Comparable<Pais> {
 	MyBinarySearchTree<Long,Empresa> empresas;
 	String nombre;
 	int cantidadPHab = 0;
+	int cantidadPTotal = 0;
 
 	public Pais(String nombre) {
 		empresas = new MyBinaryTreeSearchImp<Long, Empresa>();
@@ -21,6 +22,12 @@ public class Pais implements Comparable<Pais> {
 	}
 	public void agregarPHab() {
 		cantidadPHab++;
+	}
+	public void agregarProd() {
+		cantidadPTotal++;
+	}
+	public int getPTot() {
+		return cantidadPTotal;
 	}
 	public int getPHab() {
 		return cantidadPHab;

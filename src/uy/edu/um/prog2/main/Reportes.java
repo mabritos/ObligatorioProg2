@@ -66,20 +66,23 @@ public class Reportes {
 		paisesXmarca2 = o.order(paisesXmarca2);
 		for(int x=paisesXmarca2.length-1; x>paisesXmarca2.length-11; x--)
 			System.out.println(paisesXmarca2[x].getMarca().getNombre()+" de "+paisesXmarca2[x].getPais().getNombre()+" tiene "+paisesXmarca2[x].getProdHab());
-		
 	}
 	
 	public void reporte3(HashTable<String, Pais> paises, HashTable<String, Producto> productos) {
-		Iterator<Producto> it1 = productos.iterator();
+		
 		Iterator<Pais> it2 = paises.iterator();
 		while(it2.hasNext()) {
 			Pais pa1 = it2.next();
 			pa1.resetPHab();
 		}
+		Iterator<Producto> it1 = productos.iterator();
 		while(it1.hasNext()) {
 			Producto p1 = it1.next();
 			if(p1.getEstado().equals("HABILITADO"))
 				p1.getPais().agregarPHab();
+				
+			p1.getPais().agregarProd();
+			
 		}
 		Pais[] paisesarray = new Pais[paises.getCantElementos()];
 		Iterator<Pais> it3 = paises.iterator();
@@ -92,11 +95,41 @@ public class Reportes {
 		AlgoritmosOrdenamiento<Pais> o = new BubbleSort<Pais>();
 		paisesarray = o.order(paisesarray);
 		for(int i=paisesarray.length-1;i>paisesarray.length-11;i--)
-			System.out.println(paisesarray[i].getNombre()+" "+paisesarray[i].getPHab());
-	
-		
-	} // refinar y agregar %
-	
+			System.out.println(paisesarray[i].getNombre()+" tiene "+paisesarray[i].getPHab()+" productos habilitados ("+(paisesarray[i].getPHab()*100)/paisesarray[i].getPTot()+"%)");
 	
 
+	} // refinar y agregar %
+	
+	public void reporte4(HashTable<String, Producto> productos) throws ElementoYaExistenteException {
+		HashTable<String, PaisClase> paisesXclase = new ClosedHashTable<String, PaisClase>(8011); //key = nombre Pais + nombre clase
+		Iterator<Producto> it1 = productos.iterator();
+		while(it1.hasNext()) {
+			
+			PaisClase pc1 = new PaisClase();
+			Producto producto1 = it1.next();
+			pc1.setClase(producto1.getClase());
+			pc1.setPais(producto1.getPais());
+			if(!paisesXclase.pertenece(producto1.getPais().getNombre()+producto1.getClase().getNombre())) {
+				
+				paisesXclase.insertar(producto1.getPais().getNombre()+producto1.getClase().getNombre(), pc1);
+				if(producto1.getEstado().equals("HABILITADO"))
+					
+					paisesXclase.obtener(producto1.getPais().getNombre()+producto1.getClase().getNombre()).sumarProdHab();
+			}else if(producto1.getEstado().equals("HABILITADO"))
+				
+				paisesXclase.obtener(producto1.getPais().getNombre()+producto1.getClase().getNombre()).sumarProdHab();
+		}
+		int cantidad = paisesXclase.getCantElementos();
+		PaisClase[] paisesXclase2 = new PaisClase[cantidad];
+		Iterator<PaisClase> it2 = paisesXclase.iterator();
+		
+		for(int x=0; it2.hasNext(); x++)
+			paisesXclase2[x] = it2.next();
+		
+		AlgoritmosOrdenamiento<PaisClase> o = new BubbleSort<PaisClase>();
+		paisesXclase2 = o.order(paisesXclase2);
+		
+		for(int x=paisesXclase2.length-1; x>paisesXclase2.length-11; x--)
+			System.out.println(paisesXclase2[x].getClase().getNombre()+" de "+paisesXclase2[x].getPais().getNombre()+" tiene "+paisesXclase2[x].getProdHab());
+	}
 }
