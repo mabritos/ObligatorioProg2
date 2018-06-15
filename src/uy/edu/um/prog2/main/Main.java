@@ -17,7 +17,6 @@ public class Main {
 		 CSVReader reader = new CSVReader(new FileReader(ADDRESS_FILE), ';');
 		 String[] nextLine;
 		 int capacidad = 0;
-		 Rubro rubro;
 		 Empresa empresa;
 		 Producto producto;
 		 Marca marca;
@@ -55,10 +54,10 @@ public class Main {
 			 productos.insertar(nextLine[0]+nextLine[2]+nextLine[4], producto);
 		 }
 		 Reportes r1 = new Reportes();
-		 //r1.reporte1(empresas, productos);
-		 //r1.reporte2(productos);
-		 //r1.reporte3(paises, productos);
-		 //r1.reporte4(productos);
+		 r1.reporte1(empresas, productos);
+		 r1.reporte2(productos);
+		 r1.reporte3(paises, productos);
+		 r1.reporte4(productos);
 		
 		 
 		 double endTime = System.nanoTime();
