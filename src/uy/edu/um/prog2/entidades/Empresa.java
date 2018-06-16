@@ -1,40 +1,20 @@
 package uy.edu.um.prog2.entidades;
 
-import uy.edu.um.prog2.adt.hash.ClosedHashTable;
-import uy.edu.um.prog2.adt.hash.ElementoYaExistenteException;
-import uy.edu.um.prog2.adt.hash.HashCompletoException;
-import uy.edu.um.prog2.adt.hash.HashTable;
-
 public class Empresa implements Comparable<Empresa> {
 
 	private	String nombre;
 	private String ruc;
 	private int cantPHab=0;
-	private HashTable<String, Marca> marcas = new ClosedHashTable<>(211);
-	private HashTable<String, Producto> productos = new ClosedHashTable<String, Producto>(211);
 	
 	public Empresa(String nombre, String ruc) {
-		super();
 		this.nombre = nombre;
 		this.ruc = ruc;
-	}
-	public void agregarMarca(String clave, Marca marca) throws ElementoYaExistenteException, HashCompletoException  {
-		marcas.insertar(clave, marca);
 	}
 	public int getCantPHab() {
 		return cantPHab;
 	}
 	public void setCantPHab(int cantPHab) {
 		this.cantPHab = cantPHab;
-	}
-	public HashTable<String, Producto> getProductos() {
-		return productos;
-	}
-	public void setProductos(String clave, Producto producto) throws ElementoYaExistenteException, HashCompletoException {
-		productos.insertar(clave, producto);
-	}
-	public HashTable getMarcas() {
-		return marcas;
 	}
 	public void agregarProductoHab() {
 		cantPHab++;

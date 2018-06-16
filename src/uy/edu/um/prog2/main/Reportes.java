@@ -18,6 +18,7 @@ import uy.edu.um.prog2.entidades.*;
 public class Reportes {
 	
 	public void reporte1(HashTable<String, Empresa> empresas, HashTable<String, Producto> productos) {
+		double startTime = System.nanoTime();
 		
 		Iterator<Empresa> it3 = empresas.iterator();
 		while(it3.hasNext()) {
@@ -33,6 +34,7 @@ public class Reportes {
 		int cantidad = empresas.getCantElementos();
 		Empresa[] empresas2 = new Empresa[cantidad];
 		Iterator<Empresa> it2 = empresas.iterator();
+		
 		for(int x =0; it2.hasNext();x++) {
 			empresas2[x] = it2.next();
 		}
@@ -40,9 +42,13 @@ public class Reportes {
 		empresas2 = o.order(empresas2);
 		for(int x=empresas2.length-1; x>empresas2.length-21; x--)
 			System.out.println(empresas2[x].getNombre()+" tiene "+empresas2[x].getCantPHab()+" productos habilitados");
+		double endTime = System.nanoTime();
+		System.out.println("-Reporte 1 Completado ("+(endTime - startTime)/1000000000 + " s)");
 	}
 	
 	public void reporte2(HashTable<String, Producto> productos) throws ElementoYaExistenteException {
+		double startTime = System.nanoTime();
+		
 		HashTable<String, PaisMarca> paisesXmarca = new ClosedHashTable<String, PaisMarca>(8011); //key = nombre Pais + nombre marca
 		Iterator<Producto> it1 = productos.iterator();
 		while(it1.hasNext()) {
@@ -50,25 +56,35 @@ public class Reportes {
 			Producto producto1 = it1.next();
 			pm1.setMarca(producto1.getMarca());
 			pm1.setPais(producto1.getPais());
+			
 			if(!paisesXmarca.pertenece(producto1.getPais().getNombre()+producto1.getMarca().getNombre())) {
 				paisesXmarca.insertar(producto1.getPais().getNombre()+producto1.getMarca().getNombre(), pm1);
+				
 				if(producto1.getEstado().equals("HABILITADO"))
 					paisesXmarca.obtener(producto1.getPais().getNombre()+producto1.getMarca().getNombre()).sumarProdHab();
+				
 			}else if(producto1.getEstado().equals("HABILITADO"))
 				paisesXmarca.obtener(producto1.getPais().getNombre()+producto1.getMarca().getNombre()).sumarProdHab();
 		}
 		int cantidad = paisesXmarca.getCantElementos();
 		PaisMarca[] paisesXmarca2 = new PaisMarca[cantidad];
 		Iterator<PaisMarca> it2 = paisesXmarca.iterator();
+		
 		for(int x=0; it2.hasNext(); x++)
 			paisesXmarca2[x] = it2.next();
+		
 		AlgoritmosOrdenamiento<PaisMarca> o = new BubbleSort<PaisMarca>();
 		paisesXmarca2 = o.order(paisesXmarca2);
+		
 		for(int x=paisesXmarca2.length-1; x>paisesXmarca2.length-11; x--)
 			System.out.println(paisesXmarca2[x].getMarca().getNombre()+" de "+paisesXmarca2[x].getPais().getNombre()+" tiene "+paisesXmarca2[x].getProdHab());
+		
+		double endTime = System.nanoTime();
+		System.out.println("-Reporte 2 Completado ("+(endTime - startTime)/1000000000 + " s)");
 	}
 	
 	public void reporte3(HashTable<String, Pais> paises, HashTable<String, Producto> productos) {
+		double startTime = System.nanoTime();
 		
 		Iterator<Pais> it2 = paises.iterator();
 		while(it2.hasNext()) {
@@ -96,11 +112,14 @@ public class Reportes {
 		paisesarray = o.order(paisesarray);
 		for(int i=paisesarray.length-1;i>paisesarray.length-11;i--)
 			System.out.println(paisesarray[i].getNombre()+" tiene "+paisesarray[i].getPHab()+" productos habilitados ("+(paisesarray[i].getPHab()*100)/paisesarray[i].getPTot()+"%)");
-	
+		double endTime = System.nanoTime();
+		System.out.println("-Reporte 3 Completado ("+(endTime - startTime)/1000000000 + " s)");
 
-	} // refinar y agregar %
+	} 
 	
 	public void reporte4(HashTable<String, Producto> productos) throws ElementoYaExistenteException {
+		double startTime = System.nanoTime();
+		
 		HashTable<String, PaisClase> paisesXclase = new ClosedHashTable<String, PaisClase>(8011); //key = nombre Pais + nombre clase
 		Iterator<Producto> it1 = productos.iterator();
 		while(it1.hasNext()) {
@@ -131,5 +150,7 @@ public class Reportes {
 		
 		for(int x=paisesXclase2.length-1; x>paisesXclase2.length-11; x--)
 			System.out.println(paisesXclase2[x].getClase().getNombre()+" de "+paisesXclase2[x].getPais().getNombre()+" tiene "+paisesXclase2[x].getProdHab());
+		double endTime = System.nanoTime();
+		System.out.println("-Reporte 3 Completado ("+(endTime - startTime)/1000000000 + " s)");
 	}
 }
